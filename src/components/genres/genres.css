@@ -1,0 +1,10 @@
+.ant-typography.genres-list {
+  margin: 10px -0.2em;
+}
+
+.ant-typography.genre-tag code {
+  font-size: 12px;
+  line-height: 18.7px;
+  font-family: 'Inter';
+  font-style: normal;
+}

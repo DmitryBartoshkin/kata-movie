@@ -1,0 +1,9 @@
+.ant-flex.movie-list {
+  margin: 0 auto;
+  width: 1010px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 36px 0;
+  background-color: white;
+  gap: 36px;
+}

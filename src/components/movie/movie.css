@@ -1,0 +1,38 @@
+.ant-typography.movie-title {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 0;
+  font-family: 'Inter';
+}
+
+.ant-typography.movie-description {
+  font-size: 12px;
+  line-height: 22px;
+  font-family: 'Inter';
+}
+
+.ant-typography.movie-date {
+  font-size: 12px;
+  line-height: 22px;
+  font-family: 'Inter';
+}
+
+.ant-card.movie-card {
+  width: 451px;
+  box-shadow: 0px 4px 12px 0px #00000026;
+}
+
+.ant-card.movie-card .ant-card-body {
+  padding: 0;
+  overflow: 'hidden';
+}
+
+.movie-img {
+  display: block;
+  width: 183px;
+  height: 281px;
+}
+
+.ant-flex.movie-info {
+  padding: 10px;
+}
