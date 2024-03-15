@@ -1,6 +1,7 @@
 import { Component } from 'react'
-import { Flex } from 'antd'
+import { Flex, Spin } from 'antd'
 
+import { NoData, IsError } from '../notifications'
 import TmdbApiService from '../../services/tmdb-api-service'
 import Movie from '../movie'
 import './movies-list.css'
@@ -12,30 +13,58 @@ export default class MoviesList extends Component {
     super(props)
     this.state = {
       moviesData: [],
+      isLoader: true,
+      isNoData: false,
+      isError: false,
+      msgError: '',
     }
-    this.getMoviesData('return')
   }
 
-  getMoviesData(query) {
-    this.TmdbApiService.getAllMoviesOnSearch(query).then((data) => {
-      this.setState({
-        moviesData: data,
+  componentDidMount() {
+    const query = 'return'
+    this.TmdbApiService.getAllMoviesOnSearch(query)
+      .then((data) => {
+        this.setState({
+          moviesData: data,
+          isLoader: false,
+        })
+
+        if (data.length === 0) {
+          this.setState({
+            isNoData: true,
+          })
+        }
       })
+      .catch(this.onError)
+  }
+
+  onError = (err) => {
+    this.setState({
+      isError: true,
+      isLoader: false,
+      msgError: err.message,
     })
   }
 
   render() {
-    const { moviesData } = this.state
-    const movieItems = moviesData.map((el) => (
-      <Movie
-        key={el.id}
-        imgSrc={el.backdrop_path}
-        titleMovie={el.original_title}
-        description={el.overview}
-        releaseDate={el.release_date}
-      />
-    ))
+    const { moviesData, isLoader, isNoData, isError, msgError } = this.state
+    const errorView = isError ? <IsError msgError={msgError} /> : null
+    let movieItems = isNoData ? <NoData /> : null
 
-    return <Flex className="movie-list">{movieItems}</Flex>
+    if (!isNoData) {
+      movieItems = moviesData.map((el) => (
+        <Movie
+          key={el.id}
+          imgSrc={el.poster_path}
+          titleMovie={el.title}
+          description={el.overview}
+          releaseDate={el.release_date}
+        />
+      ))
+    }
+
+    const content = isError ? errorView : movieItems
+
+    return <Flex className="movie-list">{isLoader ? <Spin size="large" /> : content}</Flex>
   }
 }

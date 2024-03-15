@@ -2,8 +2,10 @@ import { Component } from 'react'
 import { Flex, Typography, Card } from 'antd'
 import { format } from 'date-fns'
 
-import './movie.css'
 import Genres from '../genres'
+
+import noMoviePoster from './no-movie-poster.jpg'
+import './movie.css'
 
 export default class Movie extends Component {
   constructor(props) {
@@ -11,7 +13,7 @@ export default class Movie extends Component {
     this.state = {}
 
     this.cutDescription = (text) => {
-      if (text.length > 203) {
+      if (text.length >= 203) {
         const cutIndex = text.lastIndexOf(' ', 203)
         const cutText = `${text.slice(0, cutIndex)} ...`
         return cutText
@@ -23,7 +25,14 @@ export default class Movie extends Component {
       if (date) {
         return format(new Date(date), 'PP')
       }
-      return date
+      return 'No Release Date'
+    }
+
+    this.getPosterUrl = (path) => {
+      if (path) {
+        return `https://image.tmdb.org/t/p/w500${path}`
+      }
+      return noMoviePoster
     }
   }
 
@@ -34,8 +43,8 @@ export default class Movie extends Component {
       <Card className="movie-card">
         <Flex justify="space-between">
           <img
-            src={`https://image.tmdb.org/t/p/w500${imgSrc}`}
-            alt={`Сover of the film ${titleMovie} (${releaseDate})`}
+            src={this.getPosterUrl(imgSrc)}
+            alt={`Poster of the film ${titleMovie} (${releaseDate})`}
             className="movie-img"
           />
           <Flex vertical align="flex-start" className="movie-info">
