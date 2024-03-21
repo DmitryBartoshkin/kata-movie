@@ -1,0 +1,19 @@
+.ant-pagination.pagination-pages {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+
+.ant-pagination.pagination-pages .ant-pagination-item-active {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.ant-pagination.pagination-pages .ant-pagination-item-active a {
+  color: white;
+}
+
+.ant-pagination.pagination-pages .ant-pagination-item {
+  font-weight: 400;
+  font-family: 'Inter';
+}

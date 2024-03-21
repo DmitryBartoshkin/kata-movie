@@ -22,8 +22,8 @@ export default class TmdbApiService {
     return body
   }
 
-  async getAllMoviesOnSearch(query) {
-    const res = await this.getResource(`/search/movie?query=${query}&include_adult=false&language=en-US&page=1`)
-    return res.results
+  async getAllMoviesOnSearch(query, page = 1) {
+    const res = await this.getResource(`/search/movie?query=${query}&include_adult=false&language=en-US&page=${page}`)
+    return res
   }
 }
