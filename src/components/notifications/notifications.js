@@ -23,6 +23,14 @@ function NoData() {
   )
 }
 
+function NoRatedMovies() {
+  return (
+    <Space>
+      <Alert message="Ooops!" description="No rated movies!" type="warning" showIcon />
+    </Space>
+  )
+}
+
 function IsError({ msgError }) {
   return (
     <Space>
@@ -31,4 +39,4 @@ function IsError({ msgError }) {
   )
 }
 
-export { NoConnection, NoData, IsError }
+export { NoConnection, NoData, IsError, NoRatedMovies }

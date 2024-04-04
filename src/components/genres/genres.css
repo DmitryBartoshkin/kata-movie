@@ -1,5 +1,9 @@
 .ant-typography.genres-list {
   margin: 10px -0.2em;
+  white-space: nowrap;
+  width: 246px;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .ant-typography.genre-tag code {

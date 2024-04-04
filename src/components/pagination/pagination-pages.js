@@ -3,23 +3,17 @@ import { Component } from 'react'
 import './pagination-pages.css'
 
 export default class PaginationPages extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     currentPage: 1,
-  //   }
-  // }
-
   onChangePage = (page) => {
-    const { getMoviesList, query } = this.props
-    // this.setState({
-    //   currentPage: page,
-    // })
-    getMoviesList(query, page)
+    const { getMoviesList, getRatedList, query, guestSessionId } = this.props
+    if (getMoviesList) {
+      getMoviesList(query, page)
+    }
+    if (getRatedList) {
+      getRatedList(guestSessionId, page)
+    }
   }
 
   render() {
-    // const { currentPage } = this.state
     const { totalPages, page } = this.props
     return (
       <Pagination
@@ -29,6 +23,7 @@ export default class PaginationPages extends Component {
         onChange={this.onChangePage}
         total={totalPages}
         showSizeChanger={false}
+        defaultPageSize={20}
       />
     )
   }

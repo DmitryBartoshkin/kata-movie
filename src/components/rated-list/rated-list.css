@@ -1,4 +1,4 @@
-.ant-flex.movie-list {
+.ant-flex.rated-list {
   margin: 0 auto;
   width: 1010px;
   flex-wrap: wrap;
@@ -10,7 +10,7 @@
 }
 
 @media screen and (max-width: 450px) {
-  .ant-flex.movie-list {
+  .ant-flex.rated-list {
     width: 100%;
   }
 }

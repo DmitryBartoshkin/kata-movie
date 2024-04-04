@@ -1,15 +1,13 @@
 import { Component } from 'react'
 import { Flex, Spin } from 'antd'
-import debounce from 'lodash.debounce'
 
-import { NoData, IsError } from '../notifications'
+import { NoData, NoRatedMovies } from '../notifications'
 import TmdbApiService from '../../services/tmdb-api-service'
-import Movie from '../movie'
-import Search from '../search'
+import RatedMovie from '../rated-movie'
 import PaginationPages from '../pagination'
-import './movies-list.css'
+import './rated-list.css'
 
-export default class MoviesList extends Component {
+export default class RatedList extends Component {
   TmdbApiService = new TmdbApiService()
 
   constructor(props) {
@@ -20,16 +18,20 @@ export default class MoviesList extends Component {
       isNoData: false,
       isError: false,
       isPagination: false,
-      msgError: '',
       totalPages: null,
-      query: '',
       page: 1,
     }
   }
 
-  getMoviesList = debounce((query, page) => {
+  componentDidMount() {
+    const { guestSessionId } = this.props
+    const { page } = this.state
+    this.getRatedList(guestSessionId, page)
+  }
+
+  getRatedList = (guestSessionId, page) => {
     this.setState({ isLoader: true, isPagination: false })
-    this.TmdbApiService.getAllMoviesOnSearch(query, page)
+    this.TmdbApiService.getRatedMovies(guestSessionId, page)
       .then((data) => {
         this.setState({
           moviesData: data.results,
@@ -37,7 +39,6 @@ export default class MoviesList extends Component {
           isNoData: false,
           isPagination: true,
           totalPages: data.total_results,
-          query,
           page,
         })
 
@@ -49,36 +50,39 @@ export default class MoviesList extends Component {
         }
       })
       .catch(this.onError)
-  }, 800)
+  }
 
-  onError = (err) => {
+  onError = () => {
     this.setState({
       isError: true,
       isLoader: false,
       isPagination: false,
-      msgError: err.message,
     })
   }
 
   render() {
-    const { moviesData, isLoader, isNoData, isError, isPagination, msgError, totalPages, query, page } = this.state
+    const { moviesData, isLoader, isNoData, isError, isPagination, totalPages, page } = this.state
     const { guestSessionId } = this.props
-    const errorView = isError ? <IsError msgError={msgError} /> : null
+    const errorView = isError ? <NoRatedMovies /> : null
     let movieItems = isNoData ? <NoData /> : null
     const pagination = isPagination ? (
-      <PaginationPages totalPages={totalPages} getMoviesList={this.getMoviesList} query={query} page={page} />
+      <PaginationPages
+        totalPages={totalPages}
+        getRatedList={this.getRatedList}
+        guestSessionId={guestSessionId}
+        page={page}
+      />
     ) : null
 
     if (!isNoData) {
       movieItems = moviesData.map((el) => (
-        <Movie
+        <RatedMovie
           key={el.id}
-          movieId={el.id}
           imgSrc={el.poster_path}
           titleMovie={el.title}
           description={el.overview}
           releaseDate={el.release_date}
-          guestSessionId={guestSessionId}
+          rating={el.rating}
           voteAverage={el.vote_average}
           genreIds={el.genre_ids}
         />
@@ -86,10 +90,8 @@ export default class MoviesList extends Component {
     }
 
     const content = isError ? errorView : movieItems
-
     return (
-      <Flex className="movie-list">
-        <Search getMoviesList={this.getMoviesList} />
+      <Flex className="rated-list">
         {isLoader ? <Spin size="large" /> : content}
         {pagination}
       </Flex>

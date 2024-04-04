@@ -2,15 +2,11 @@ import { Component } from 'react'
 import { Flex, Typography, Card, Rate } from 'antd'
 import { format } from 'date-fns'
 
-import TmdbApiService from '../../services/tmdb-api-service'
 import Genres from '../genres'
+import noMoviePoster from '../movie/no-movie-poster.jpg'
+import './rated-movie.css'
 
-import noMoviePoster from './no-movie-poster.jpg'
-import './movie.css'
-
-export default class Movie extends Component {
-  TmdbApiService = new TmdbApiService()
-
+export default class RatedMovie extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -22,11 +18,6 @@ export default class Movie extends Component {
         return cutText
       }
       return text
-    }
-
-    this.onAddRate = (rate) => {
-      const { guestSessionId, movieId } = this.props
-      this.TmdbApiService.addRating(guestSessionId, movieId, rate)
     }
 
     this.formatDate = (date) => {
@@ -46,7 +37,7 @@ export default class Movie extends Component {
 
   render() {
     const { Text, Paragraph } = Typography
-    const { description, imgSrc, titleMovie, releaseDate, voteAverage, genreIds } = this.props
+    const { description, imgSrc, titleMovie, releaseDate, rating, voteAverage, genreIds } = this.props
     const vote = Math.floor(voteAverage * 10) / 10
     let voteColor = ''
 
@@ -59,7 +50,6 @@ export default class Movie extends Component {
     } else {
       voteColor = 'vote-green'
     }
-
     return (
       <Card className="movie-card">
         <Flex justify="space-between">
@@ -80,7 +70,7 @@ export default class Movie extends Component {
             </Text>
             <Genres genreIds={genreIds} />
             <Paragraph className="movie-description">{this.cutDescription(description)}</Paragraph>
-            <Rate className="movie-rate" allowHalf count={10} defaultValue={0} onChange={(e) => this.onAddRate(e)} />
+            <Rate className="movie-rate" disabled allowHalf count={10} defaultValue={rating} />
           </Flex>
         </Flex>
       </Card>

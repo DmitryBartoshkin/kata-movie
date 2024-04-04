@@ -1,3 +1,3 @@
-import { NoConnection, NoData, IsError } from './notifications'
+import { NoConnection, NoData, IsError, NoRatedMovies } from './notifications'
 
-export { NoConnection, NoData, IsError }
+export { NoConnection, NoData, IsError, NoRatedMovies }

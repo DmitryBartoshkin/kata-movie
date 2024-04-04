@@ -2,13 +2,21 @@
   font-size: 20px;
   font-weight: 400;
   margin-top: 0;
+  margin-bottom: 5px;
   font-family: 'Inter';
+  width: 206px;
+  white-space: nowrap;
+  overflow-x: auto;
+  margin-right: 10px;
+  scrollbar-width: thin;
+  flex-shrink: 1;
 }
 
 .ant-typography.movie-description {
   font-size: 12px;
   line-height: 22px;
   font-family: 'Inter';
+  flex-grow: 1;
 }
 
 .ant-typography.movie-date {
@@ -35,4 +43,64 @@
 
 .ant-flex.movie-info {
   padding: 10px;
+  width: 266px;
+}
+
+.ant-flex.movie-info-header {
+  width: 100%;
+}
+
+.ant-rate.movie-rate {
+  font-size: 16px;
+}
+
+.movie-vote {
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  line-height: 2.2;
+  border: 2px solid;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.vote-red {
+  border-color: #e90000;
+}
+
+.vote-orange {
+  border-color: #e97e00;
+}
+
+.vote-yellow {
+  border-color: #e9d100;
+}
+
+.vote-green {
+  border-color: #66e900;
+}
+
+@media screen and (max-width: 450px) {
+  .ant-card.movie-card {
+    width: 100%;
+  }
+
+  .movie-img {
+    width: 60px;
+    height: 91px;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  .ant-flex.movie-info {
+    width: 100%;
+  }
+
+  .ant-typography.movie-description {
+    margin-left: -70px;
+  }
+
+  .ant-rate.movie-rate {
+    align-self: end;
+  }
 }

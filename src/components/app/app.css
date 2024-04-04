@@ -4,3 +4,40 @@ body {
   box-sizing: border-box;
   background-color: #f7f7f7;
 }
+
+.ant-flex.tabs {
+  margin: 0 auto;
+  width: 1010px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 24px;
+  background-color: white;
+  gap: 36px;
+}
+
+.ant-flex.tabs .ant-tabs-nav::before {
+  left: 50%;
+  margin-left: -73px;
+  width: 146px;
+}
+
+.ant-flex.tabs .ant-tabs-tab {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: 'Inter';
+}
+
+.ant-flex.tabs .ant-tabs-tab + .ant-tabs-tab {
+  margin-left: 16px;
+}
+
+@media screen and (max-width: 450px) {
+  .ant-flex.tabs {
+    width: 100%;
+  }
+
+  .ant-flex.tabs .ant-tabs {
+    margin: 0 16px;
+    width: 100%;
+  }
+}
