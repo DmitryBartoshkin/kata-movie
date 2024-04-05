@@ -96,6 +96,10 @@
     width: 100%;
   }
 
+  .ant-typography.movie-title {
+    width: 60vw;
+  }
+
   .ant-typography.movie-description {
     margin-left: -70px;
   }
