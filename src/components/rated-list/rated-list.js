@@ -62,7 +62,7 @@ export default class RatedList extends Component {
 
   render() {
     const { moviesData, isLoader, isNoData, isError, isPagination, totalPages, page } = this.state
-    const { guestSessionId } = this.props
+    const { guestSessionId, cutDescription, formatDate, getPosterUrl } = this.props
     const errorView = isError ? <NoRatedMovies /> : null
     let movieItems = isNoData ? <NoData /> : null
     const pagination = isPagination ? (
@@ -78,10 +78,10 @@ export default class RatedList extends Component {
       movieItems = moviesData.map((el) => (
         <RatedMovie
           key={el.id}
-          imgSrc={el.poster_path}
+          imgSrc={getPosterUrl(el.poster_path)}
           titleMovie={el.title}
-          description={el.overview}
-          releaseDate={el.release_date}
+          description={cutDescription(el.overview)}
+          releaseDate={formatDate(el.release_date)}
           rating={el.rating}
           voteAverage={el.vote_average}
           genreIds={el.genre_ids}

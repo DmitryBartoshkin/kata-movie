@@ -1,11 +1,8 @@
 import { Component } from 'react'
 import { Flex, Typography, Card, Rate } from 'antd'
-import { format } from 'date-fns'
 
 import TmdbApiService from '../../services/tmdb-api-service'
 import Genres from '../genres'
-
-import noMoviePoster from './no-movie-poster.jpg'
 import './movie.css'
 
 export default class Movie extends Component {
@@ -15,38 +12,17 @@ export default class Movie extends Component {
     super(props)
     this.state = {}
 
-    this.cutDescription = (text) => {
-      if (text.length >= 203) {
-        const cutIndex = text.lastIndexOf(' ', 203)
-        const cutText = `${text.slice(0, cutIndex)} ...`
-        return cutText
-      }
-      return text
-    }
-
     this.onAddRate = (rate) => {
-      const { guestSessionId, movieId } = this.props
+      const { guestSessionId, movieId, setRating } = this.props
       this.TmdbApiService.addRating(guestSessionId, movieId, rate)
-    }
-
-    this.formatDate = (date) => {
-      if (date) {
-        return format(new Date(date), 'PP')
-      }
-      return 'No Release Date'
-    }
-
-    this.getPosterUrl = (path) => {
-      if (path) {
-        return `https://image.tmdb.org/t/p/w500${path}`
-      }
-      return noMoviePoster
+      setRating(movieId, rate)
     }
   }
 
   render() {
     const { Text, Paragraph } = Typography
-    const { description, imgSrc, titleMovie, releaseDate, voteAverage, genreIds } = this.props
+    const { description, imgSrc, titleMovie, releaseDate, voteAverage, genreIds, rating } = this.props
+    let ratingValue = 0
     const vote = Math.floor(voteAverage * 10) / 10
     let voteColor = ''
 
@@ -60,14 +36,14 @@ export default class Movie extends Component {
       voteColor = 'vote-green'
     }
 
+    if (rating) {
+      ratingValue = rating.rating
+    }
+
     return (
       <Card className="movie-card">
         <Flex justify="space-between">
-          <img
-            src={this.getPosterUrl(imgSrc)}
-            alt={`Poster of the film ${titleMovie} (${releaseDate})`}
-            className="movie-img"
-          />
+          <img src={imgSrc} alt={`Poster of the film ${titleMovie} (${releaseDate})`} className="movie-img" />
           <Flex vertical align="flex-start" className="movie-info">
             <Flex className="movie-info-header" justify="space-between">
               <Typography.Title level={5} className="movie-title">
@@ -76,11 +52,17 @@ export default class Movie extends Component {
               <div className={`movie-vote ${voteColor}`}>{vote}</div>
             </Flex>
             <Text type="secondary" className="movie-date">
-              {this.formatDate(releaseDate)}
+              {releaseDate}
             </Text>
             <Genres genreIds={genreIds} />
-            <Paragraph className="movie-description">{this.cutDescription(description)}</Paragraph>
-            <Rate className="movie-rate" allowHalf count={10} defaultValue={0} onChange={(e) => this.onAddRate(e)} />
+            <Paragraph className="movie-description">{description}</Paragraph>
+            <Rate
+              className="movie-rate"
+              allowHalf
+              count={10}
+              defaultValue={ratingValue}
+              onChange={(e) => this.onAddRate(e)}
+            />
           </Flex>
         </Flex>
       </Card>

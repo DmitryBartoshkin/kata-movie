@@ -24,7 +24,17 @@ export default class MoviesList extends Component {
       totalPages: null,
       query: '',
       page: 1,
+      moviesRaring: [],
     }
+  }
+
+  setRating = (movieId, rate) => {
+    const { moviesRaring } = this.state
+    moviesRaring.push({ id: movieId, rating: rate })
+
+    this.setState({
+      moviesRaring,
+    })
   }
 
   getMoviesList = debounce((query, page) => {
@@ -61,8 +71,9 @@ export default class MoviesList extends Component {
   }
 
   render() {
-    const { moviesData, isLoader, isNoData, isError, isPagination, msgError, totalPages, query, page } = this.state
-    const { guestSessionId } = this.props
+    const { moviesData, isLoader, isNoData, isError, isPagination, msgError, totalPages, query, page, moviesRaring } =
+      this.state
+    const { guestSessionId, cutDescription, formatDate, getPosterUrl } = this.props
     const errorView = isError ? <IsError msgError={msgError} /> : null
     let movieItems = isNoData ? <NoData /> : null
     const pagination = isPagination ? (
@@ -74,19 +85,20 @@ export default class MoviesList extends Component {
         <Movie
           key={el.id}
           movieId={el.id}
-          imgSrc={el.poster_path}
+          imgSrc={getPosterUrl(el.poster_path)}
           titleMovie={el.title}
-          description={el.overview}
-          releaseDate={el.release_date}
+          description={cutDescription(el.overview)}
+          releaseDate={formatDate(el.release_date)}
           guestSessionId={guestSessionId}
           voteAverage={el.vote_average}
           genreIds={el.genre_ids}
+          setRating={this.setRating}
+          rating={moviesRaring.find((item) => item.id === el.id)}
         />
       ))
     }
 
     const content = isError ? errorView : movieItems
-
     return (
       <Flex className="movie-list">
         <Search getMoviesList={this.getMoviesList} />
